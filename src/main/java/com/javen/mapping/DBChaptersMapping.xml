@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.javen.dao.DBChaptersDao" >
+
+  <resultMap id="BaseResultMap" type="com.javen.model.DBChapters" >
+	
+	<result column="chapters" property="chapters" jdbcType="INTEGER" />
+	<result column="title" property="chapters_title" jdbcType="VARCHAR" />
+	<result column="comic_title" property="title" jdbcType="VARCHAR" />
+	<result column="comic_id" property="comic_id" jdbcType="INTEGER" />
+	<result column="num" property="num" jdbcType="INTEGER" />
+	<result column="id" property="id" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id,chapters,title,comic_title,comic_id,num
+  </sql>
+  <select id="getDBChapters" resultType="java.lang.String" parameterType="java.lang.Integer">
+  	select comics_cover from preloadchapters where comics_chapter_id=#{id} order by id;
+  </select>
+ <select id="getDBChapter" resultMap="BaseResultMap" >
+  	select comics_chapter.id as chapters,comics_chapter.title as title,comics.comics_name as comic_title,count(*) as num,
+  	comics.id as comic_id  from ((preloadchapters inner join comics_chapter on comics_chapter.id=preloadchapters.comics_chapter_id )inner join comics on comics.id=comics_chapter.comics_id) where comics.id=#{id} group by  comics_chapter.id order by comics_chapter.id limit #{chapters},1
+  </select>
+  <insert id="addComic">
+  		insert into preloadchapters(comics_id,comics_chapter_id,comics_cover) values
+  		<foreach collection="covers" item="item" index="index" separator=",">
+      (
+      	#{comics_id},#{comics_chapter_id},#{item}
+      )
+    </foreach>
+
+  </insert>
+  </mapper>

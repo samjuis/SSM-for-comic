@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.javen.dao.typesDao" >
+  <cache type="com.javen.redis.RedisCache" />
+  <resultMap id="BaseResultMap" type="com.javen.model.types" >
+	
+	<result column="theme" property="theme" jdbcType="VARCHAR" />
+<result column="audience" property="audience" jdbcType="VARCHAR" />
+<result column="finish" property="finish" jdbcType="VARCHAR" />
+<result column="nation" property="nation" jdbcType="VARCHAR" />
+
+
+	<result column="id" property="id" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id,audience,finish,theme,nation
+  </sql>
+	<select id="getTypes" resultMap="BaseResultMap">
+		select * from types
+	</select>
+  </mapper>

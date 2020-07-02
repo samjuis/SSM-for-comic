@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.javen.dao.userDao" >
+  <cache type="com.javen.redis.RedisCache" />
+  <resultMap id="BaseResultMap" type="com.javen.model.User" >
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+	<result column="nikeName" property="nikeName" jdbcType="VARCHAR" />
+	<result column="gender" property="gender" jdbcType="INTEGER" />
+	<result column="roleID" property="roleID" jdbcType="INTEGER" />
+	<result column="img" property="img" jdbcType="VARCHAR" />
+	<result column="country" property="country" jdbcType="VARCHAR" />
+	<result column="city" property="city" jdbcType="VARCHAR" />
+	<result column="province" property="province" jdbcType="VARCHAR" />
+	<result column="integral" property="integral" jdbcType="INTEGER" />
+	<result column="regtime" property="regtime" jdbcType="VARCHAR" />
+	<result column="id" property="id" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id,username,password,nikeName,gender,roleID,img,country,city,province,integral,regtime
+  </sql>
+  <select id="getUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from user where username=#{username} and password=#{password}
+  </select>
+  <insert id="addUser" parameterType="com.javen.model.User"  useGeneratedKeys="true" keyProperty="id">
+	insert into user(nikeName,password,username,gender,retime) values(#{nikeName},#{password},#{username},#{gender},#{retime})
+  	
+  </insert>
+  <insert id="addIntegral">
+  	insert into qiandao(uid,date,integral) values(#{uid},#{date},#{ran})
+  	</insert>
+  	<update id="updateIntgral">
+  		update user set integral=integral+#{ran} where id=#{uid}
+  	</update>
+  	<select id="getIntegral" resultType="Integer">
+  		select count(*) from qiandao where uid=#{uid} and date=#{date}
+  	</select>
+  </mapper>

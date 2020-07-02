@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.javen.dao.comicChapterDao" >
+  <cache type="com.javen.redis.RedisCache" />
+  <resultMap id="BaseResultMap" type="com.javen.model.comics_chapter" >
+	
+	<result column="title" property="title" jdbcType="VARCHAR" />
+	<result column="chapter" property="chapter" jdbcType="INTEGER" />
+	<result column="comics_id" property="comics_id" jdbcType="INTEGER"/>
+
+	<result column="id" property="id" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id,title,chapter,comics_id
+  </sql>
+  <select id="getChapter" resultType="java.lang.String" parameterType="java.lang.Integer">
+  	select title from comics_chapter where comics_id=#{id}
+  </select>
+<select id="getChapter_url" resultType="java.lang.String" parameterType="java.lang.Integer">
+  	select chapter from comics_chapter where comics_id=#{id}
+  </select>
+  <insert id="addChapter" useGeneratedKeys="true" keyProperty="id" parameterType="com.javen.model.comics_chapter">
+  	insert into comics_chapter(comics_id,chapter,title) values(#{comics_id},#{chapter},#{title})
+  </insert>
+
+  </mapper>

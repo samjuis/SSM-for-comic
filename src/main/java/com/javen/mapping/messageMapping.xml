@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.javen.dao.msgDao" >
+  <cache type="com.javen.redis.RedisCache" />
+  <resultMap id="BaseResultMap" type="com.javen.model.message" >
+	<result column="nikeName" property="nikeName" jdbcType="VARCHAR" />
+	<result column="datetime" property="dateTime" jdbcType="VARCHAR" />
+	<result column="content" property="context" jdbcType="VARCHAR" />
+	<result column="title" property="title" jdbcType="VARCHAR" />
+	<result column="imgurl" property="imgurl" jdbcType="VARCHAR" />
+	<result column="id" property="id" jdbcType="INTEGER" />
+	<result column="u_id" property="u_id" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id,nikeName,datetime,content,imgurl,title
+  </sql>
+  <select id="getMsg" resultMap="BaseResultMap">
+  	select imgurl,content as context,title,datetime,user.nikeName,message.id from user inner join message on user.id=message.u_id order by message.id desc limit 10
+  </select>
+	<insert id="addMsg">
+		insert into message(datetime,content,imgurl,title,u_id) values(#{dateTime},#{context},#{imgurl},#{title},#{u_id})
+	</insert>
+	<select id="getMessage" resultMap="BaseResultMap">
+		select imgurl,content as context,title,datetime,user.nikeName,message.id from user inner join message on user.id=message.u_id order by message.id desc limit #{position},1
+	</select>
+  </mapper>
